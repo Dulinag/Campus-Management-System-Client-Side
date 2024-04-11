@@ -13,6 +13,7 @@ const AddCampusForm = ({ onSubmit }) => {
     name: "",
     address: "",
     description: "",
+    imageUrl: ""
   });
 
   const handleChange = (e) => {
@@ -31,6 +32,7 @@ const AddCampusForm = ({ onSubmit }) => {
       name: "",
       address: "",
       description: "",
+      imageUrl: ""
     });
   };
 
@@ -67,6 +69,16 @@ const AddCampusForm = ({ onSubmit }) => {
             onChange={handleChange}
           />
         </div>
+        <div style={{ marginBottom: "10px" }}>
+          <label htmlFor="imageUrl">Image URL:</label>
+          <input
+            type="text"
+            id="imageUrl"
+            name="imageUrl"
+            value={formData.imageUrl}
+            onChange={handleChange}
+          />
+        </div>
         <button type="submit">Submit</button>
       </form>
     </section>
@@ -89,7 +101,6 @@ const AllCampusesView = (props) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        // Optionally, update the state or trigger a fetch to update the campuses list
         console.log("New campus added:", data);
         // Refresh the page after adding the campus
         window.location.reload();
@@ -107,8 +118,7 @@ const AllCampusesView = (props) => {
       .then((response) => response.json())
       .then((data) => {
         console.log("Campus deleted:", data);
-        // After deleting, you might want to update the campuses list or reload the page
-        // For simplicity, let's just reload the page
+
         window.location.reload();
       })
       .catch((error) => {
