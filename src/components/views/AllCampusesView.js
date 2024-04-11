@@ -126,6 +126,14 @@ const AllCampusesView = (props) => {
       });
   };
 
+
+  const handleEditCampus = (id) => {
+    // Redirect user to Edit Campus View
+    window.location.href = `/edit-campus/${id}`;
+  };
+
+
+
   return (
     <div>
       <h1>All Campuses</h1>
@@ -138,6 +146,7 @@ const AllCampusesView = (props) => {
             <h4>campus id: {campus.id}</h4>
             <p>{campus.address}</p>
             <p>{campus.description}</p>
+            <button onClick={() => handleEditCampus(campus.id)}>Edit</button>
             <button onClick={() => handleDeleteCampus(campus.id)}>Delete</button>
             <hr />
           </div>

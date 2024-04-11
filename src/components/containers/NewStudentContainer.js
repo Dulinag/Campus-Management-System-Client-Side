@@ -43,17 +43,23 @@ class NewStudentContainer extends Component {
         campusId: this.state.campusId
     };
     
-    // Add new student in back-end database
-    let newStudent = await this.props.addStudent(student);
-
-    // Update state, and trigger redirect to show the new student
-    this.setState({
-      firstname: "", 
-      lastname: "", 
-      campusId: null, 
-      redirect: true, 
-      redirectId: newStudent.id
-    });
+    try {
+      // Add new student in back-end database
+      let newStudent = await this.props.addStudent(student);
+    
+      // Update state, and trigger redirect to show the new student
+      this.setState({
+        firstname: "", 
+        lastname: "", 
+        campusId: null, 
+        redirect: true, 
+        redirectId: newStudent.id
+      });
+    } catch (error) {
+      // Handle errors
+      console.error('Error adding student:', error);
+    }
+    
   }
 
   // Unmount when the component is being removed from the DOM:
