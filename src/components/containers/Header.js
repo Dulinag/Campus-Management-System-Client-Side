@@ -21,24 +21,28 @@ const useStyles = makeStyles(theme => ({
   title: {
     flexGrow: 1,
     textAlign: 'left',
-    fontType: 'bold',
-    fontFamily: 'sans-serif', 
-    fontSize: '35px', 
-    color: 'darkblue'
+    fontWeight: 'bold',
+    fontFamily: 'Roboto', 
+    fontSize: '2rem', 
+    color: '#ffffff' // white text color
   },
   appBar:{
-    backgroundColor: '#fcb6bb',
-    shadows: ['none'],
+    background: 'linear-gradient(to right, #6a11cb, #2575fc)', // gradient background
+    boxShadow: 'none',
   },
   greeting:{
     display: 'flex',
     justifyContent: 'center',
-    backgroundColor: 'white',
+    backgroundColor: '#f0f0f0',
     width: "50%",
     margin: "auto",
+    padding: theme.spacing(2),
+    borderRadius: theme.shape.borderRadius,
   },
   links:{
     textDecoration: 'none',
+    color: '#2575fc', // blue color
+    fontWeight: 'bold',
   }
 }));
 
