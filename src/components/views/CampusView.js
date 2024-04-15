@@ -5,12 +5,35 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(() => ({
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    height: '100vh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundImage: 'linear-gradient(to bottom right, #6a11cb, #2575fc)', // Gradient background
+    color: '#ffffff', // White text color
+    textAlign: 'center',
+    overflow: 'hidden', // Hide overflowing content
+  },
+  reet: {
+   
+    justifyContent: 'center',
+    backgroundImage: 'linear-gradient(to bottom right, #6a11cb, #2575fc)', // Gradient background
+    color: '#ffffff', // White text color
+    textAlign: 'center',
+    overflow: 'hidden', // Hide overflowing content
+    color: "white"
+  },
   formContainer: {
     width: '500px',
     backgroundColor: '#f0f0f5',
     borderRadius: '5px',
     margin: 'auto',
+    boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)', // Box shadow for visual effect
+    padding: theme.spacing(3), // Padding for content spacing
+    textAlign: 'center',
   },
   formTitle: {
     backgroundColor: '#c5c8d6',
@@ -18,8 +41,12 @@ const useStyles = makeStyles(() => ({
     textAlign: 'center',
     borderRadius: '5px 5px 0px 0px',
     padding: '3px',
+    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)', // Box shadow for visual effect
+    fontSize: '1.5rem', // Larger font size for title
   },
 }));
+
+
 
 const CampusView = (props) => {
   const { campus } = props;
@@ -59,8 +86,8 @@ const CampusView = (props) => {
   };
 
   return (
-    <div>
-      <h1>{campus.name}</h1>
+    <div className={classes.reet}>
+    <h1>{campus.name}</h1>
       <p>{campus.address}</p>
       <p>{campus.description}</p>
 
@@ -70,7 +97,8 @@ const CampusView = (props) => {
           return (
             <div key={student.id} className={classes.studentContainer}>
               <div className={classes.studentName}>
-                <Link to={`/student/${student.id}`}>
+                <Link to={`/student/${student.id}`} style={{ color: '#fff', textDecoration: 'underline' }}>
+
                   <h2>{name}</h2>
                 </Link>
               </div>

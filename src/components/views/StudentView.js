@@ -1,28 +1,44 @@
-/*==================================================
-StudentView.js
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 
-The Views component is responsible for rendering web page with data provided by the corresponding Container component.
-It constructs a React component to display the single student view page.
-================================================== */
+const useStyles = makeStyles(theme => ({
+  root: {
+    height: '100vh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundImage: 'linear-gradient(to bottom right, #6a11cb, #2575fc)', // Gradient background
+    color: '#ffffff', // White text color
+    textAlign: 'center',
+    overflow: 'hidden', // Hide overflowing content
+  },
+  title: {
+    fontSize: '3rem', // Large font size
+    fontWeight: 'bold',
+    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)', // Text shadow for visual effect
+    letterSpacing: '1px', // Add some letter spacing for better readability
+    marginBottom: theme.spacing(4), // Add margin bottom for separation from other content
+  },
+}));
+
 const StudentView = (props) => {
   const { student } = props;
+  const classes = useStyles();
 
-  // Render a single Student view 
   return (
-    <div>
-      <h1>{student.firstname + " " + student.lastname}</h1>
-      <h3>{student.campus.name}</h3>
-
+    <div className={classes.root}>
       <div>
-        <h3>Email: {student.email}</h3>
-        <h3>GPA: {student.gpa}</h3>
-        <h3>Image URL: {student.imageUrl}</h3>
-      </div>
+        <h1 className={classes.title}>{student.firstname + " " + student.lastname}</h1>
+        <h3>{student.campus.name}</h3>
 
-      
+        <div>
+          <h3>Email: {student.email}</h3>
+          <h3>GPA: {student.gpa}</h3>
+          <h3>Image URL: {student.imageUrl}</h3>
+        </div>
+      </div>
     </div>
   );
-
 };
 
 export default StudentView;

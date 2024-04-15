@@ -1,14 +1,30 @@
-/*==================================================
-HomePageView.js
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 
-The Views component is responsible for rendering web page with data provided by the corresponding Container component.
-It constructs a React component to display the home page.
-================================================== */
+const useStyles = makeStyles(theme => ({
+  root: {
+    height: '100vh', 
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundImage: 'linear-gradient(to bottom right, #6a11cb, #2575fc)', // Gradient background
+    color: '#ffffff', 
+    textAlign: 'center',
+    overflow: 'hidden', 
+  },
+  title: {
+    fontSize: '3rem', 
+    fontWeight: 'bold',
+    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)', // Text shadow for visual effect
+  },
+}));
+
 const HomePageView = () => {
-  // Render Home page view
+  const classes = useStyles();
+
   return (
-    <div >
-      <h1>Home Page</h1>
+    <div className={classes.root}>
+      <h1 className={classes.title}>Welcome to Our Website</h1>
     </div>
   );    
 }
