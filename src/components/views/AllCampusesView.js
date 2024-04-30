@@ -50,6 +50,94 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+
+
+
+
+
+//------------------------------------------------Edit campus form-------------------------------------------//
+
+
+const EditCampusForm = ({ onSubmit, onCancel, campus }) => {
+  console.log("EditCampusForm running")
+  const [formData, setFormData] = useState({
+    id: campus.id,
+    name: campus.name,
+    address: campus.address,
+    description: campus.description,
+    imageUrl: campus.imageUrl,
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit(formData);
+  };
+
+  const handleCancel = () => {
+    onCancel();
+  };
+
+  return (
+    <section style={{ border: "1px solid #ccc", padding: "20px", marginBottom: "20px" }}>
+      <h2>Edit Campus</h2>
+      <form onSubmit={handleSubmit}>
+        <div style={{ marginBottom: "10px" }}>
+          <label htmlFor="name">Name:</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+          />
+        </div>
+        <div style={{ marginBottom: "10px" }}>
+          <label htmlFor="address">Address:</label>
+          <input
+            type="text"
+            id="address"
+            name="address"
+            value={formData.address}
+            onChange={handleChange}
+          />
+        </div>
+        <div style={{ marginBottom: "10px" }}>
+          <label htmlFor="description">Description:</label>
+          <textarea
+            id="description"
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+          />
+        </div>
+        <div style={{ marginBottom: "10px" }}>
+          <label htmlFor="imageUrl">Image URL:</label>
+          <input
+            type="text"
+            id="imageUrl"
+            name="imageUrl"
+            value={formData.imageUrl}
+            onChange={handleChange}
+          />
+        </div>
+        <button type="submit">Submit</button>
+        <button type="button" onClick={handleCancel}>Cancel</button>
+      </form>
+    </section>
+  );
+};
+
+
+
+//------------------------------------------------Add campus form-------------------------------------------//
 const AddCampusForm = ({ onSubmit }) => {
   const [formData, setFormData] = useState({
     name: "",
@@ -78,6 +166,8 @@ const AddCampusForm = ({ onSubmit }) => {
     });
   };
   const classes = useStyles();
+
+
 
   return (
     <div className={classes.root}>
@@ -131,11 +221,38 @@ const AddCampusForm = ({ onSubmit }) => {
   );
 };
 
-AddCampusForm.propTypes = {
+
+EditCampusForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  campus: PropTypes.object.isRequired,
 };
 
+
+
+AddCampusForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  campus: PropTypes.object.isRequired,
+};
+
+
+
 const AllCampusesView = (props) => {
+
+  const [editingCampus, setEditingCampus] = useState(null);
+
+  const handleEditCampus = (id) => {
+    console.log("Edit button clicked for campus ID:", id);
+    // Retrieve the campus data based on ID and set it to state
+    const campus = props.allCampuses.find((campus) => campus.id === id);
+    setEditingCampus(campus);
+  };
+  const handleCancelEdit = () => {
+    // Reset editingCampus state to null when canceling edit
+    setEditingCampus(null);
+  };
+
+
   const handleAddCampus = (formData) => {
     // Make a POST request to the server to add the new campus
     fetch("/api/campuses", {
@@ -173,10 +290,30 @@ const AllCampusesView = (props) => {
   };
 
 
-  const handleEditCampus = (id) => {
-    // Redirect user to Edit Campus View
-    window.location.href = `/edit-campus/${id}`;
+
+  const handleEditSubmit = (formData, campusId) => {
+    console.log("the route is running");
+    // Make a PUT request to the server to update the campus
+    fetch(`/api/campuses/${campusId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Campus updated:", data);
+      window.location.reload();
+      // Handle success, refresh page
+    })
+    .catch((error) => {
+      console.error("Error updating campus:", error);
+    });
   };
+  
+
+
 
   const classes = useStyles();
 
@@ -195,8 +332,16 @@ const AllCampusesView = (props) => {
             <h4>campus id: {campus.id}</h4>
             <p>{campus.address}</p>
             <p>{campus.description}</p>
-            <button onClick={() => handleEditCampus(campus.id)}>Edit</button>
-            <button onClick={() => handleDeleteCampus(campus.id)}>Delete</button>
+
+            {editingCampus && editingCampus.id === campus.id ? (
+              <EditCampusForm onSubmit={(formData) => handleEditSubmit(formData, campus.id)} onCancel={handleCancelEdit} campus={editingCampus} />
+            ) : (
+              <>
+                <button onClick={() => handleEditCampus(campus.id)}>Edit</button>
+                <button onClick={() => handleDeleteCampus(campus.id)}>Delete</button>
+              </>
+            )}
+
             <hr />
           </div>
         ))
@@ -212,7 +357,7 @@ const AllCampusesView = (props) => {
   );
 };
 
-// Validate data type of the props passed to component.
+
 AllCampusesView.propTypes = {
   allCampuses: PropTypes.array.isRequired,
 };
