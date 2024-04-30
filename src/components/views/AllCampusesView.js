@@ -54,10 +54,7 @@ const useStyles = makeStyles(theme => ({
 
 
 
-
-//------------------------------------------------Edit campus form-------------------------------------------//
-
-
+//----------------------------------------------Edit campus form-------------------------//
 const EditCampusForm = ({ onSubmit, onCancel, campus }) => {
   console.log("EditCampusForm running")
   const [formData, setFormData] = useState({
@@ -68,17 +65,49 @@ const EditCampusForm = ({ onSubmit, onCancel, campus }) => {
     imageUrl: campus.imageUrl,
   });
 
+  const [errors, setErrors] = useState({
+    imageUrl: "",
+  });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
+  
+
+    // Reset the error message when user starts typing
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: "",
+    }));
   };
+
+  const validate = () => {
+    let isValid = true;
+    const newErrors = {};
+
+    // Validate imageUrl
+    if (formData.imageUrl && !formData.imageUrl.endsWith(".jpg")) {
+      newErrors.imageUrl = "Image URL must end with .jpg";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+
+
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+
+    if (validate()) {
+      onSubmit(formData);
+    }
   };
 
   const handleCancel = () => {
@@ -127,6 +156,7 @@ const EditCampusForm = ({ onSubmit, onCancel, campus }) => {
             value={formData.imageUrl}
             onChange={handleChange}
           />
+          {errors.imageUrl && <span style={{ color: "red" }}>{errors.imageUrl}</span>}
         </div>
         <button type="submit">Submit</button>
         <button type="button" onClick={handleCancel}>Cancel</button>
@@ -137,12 +167,16 @@ const EditCampusForm = ({ onSubmit, onCancel, campus }) => {
 
 
 
-//------------------------------------------------Add campus form-------------------------------------------//
+//----------------------------------------------Add campus form-------------------------//
 const AddCampusForm = ({ onSubmit }) => {
   const [formData, setFormData] = useState({
     name: "",
     address: "",
     description: "",
+    imageUrl: ""
+  });
+
+  const [errors, setErrors] = useState({
     imageUrl: ""
   });
 
@@ -152,18 +186,43 @@ const AddCampusForm = ({ onSubmit }) => {
       ...prevData,
       [name]: value,
     }));
+  
+    // Reset error message when user starts typing
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: "",
+    }));
+  };
+
+
+  const validate = () => {
+    let isValid = true;
+    const newErrors = {};
+
+    // Validate imageUrl
+    if (formData.imageUrl && !formData.imageUrl.endsWith(".jpg")) {
+      newErrors.imageUrl = "Image URL must end with .jpg";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
-    // Clear form fields after submission
-    setFormData({
-      name: "",
-      address: "",
-      description: "",
-      imageUrl: ""
-    });
+
+    if (validate()) {
+      onSubmit(formData);
+
+      // Clear form fields after successful submission
+      setFormData({
+        name: "",
+        address: "",
+        description: "",
+        imageUrl: ""
+      });
+    }
   };
   const classes = useStyles();
 
@@ -213,6 +272,7 @@ const AddCampusForm = ({ onSubmit }) => {
             value={formData.imageUrl}
             onChange={handleChange}
           />
+          {errors.imageUrl && <span style={{ color: "red" }}>{errors.imageUrl}</span>}
         </div>
         <button type="submit">Submit</button>
       </form>
@@ -305,7 +365,7 @@ const AllCampusesView = (props) => {
     .then((data) => {
       console.log("Campus updated:", data);
       window.location.reload();
-      // Handle success, refresh page
+      // Handle success, maybe redirect user or update state
     })
     .catch((error) => {
       console.error("Error updating campus:", error);
@@ -357,7 +417,7 @@ const AllCampusesView = (props) => {
   );
 };
 
-
+// Validate data type of the props passed to component.
 AllCampusesView.propTypes = {
   allCampuses: PropTypes.array.isRequired,
 };
