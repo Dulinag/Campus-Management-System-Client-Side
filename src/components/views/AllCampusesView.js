@@ -35,7 +35,7 @@ const EditCampusForm = ({ onSubmit, onCancel, campus }) => {
     }));
   
 
-    // Reset error message when user starts typing
+    // Reset the error message when user starts typing
     setErrors((prevErrors) => ({
       ...prevErrors,
       [name]: "",
