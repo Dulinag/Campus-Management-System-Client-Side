@@ -380,8 +380,11 @@ const AllCampusesView = (props) => {
 
   return (
     <div className={classes.reet}>
+            <AddCampusForm onSubmit={handleAddCampus} />
+
 
     <div className={classes.studentContainer}>
+      
       <h1>All Campuses</h1>
       {props.allCampuses.length ? (
         props.allCampuses.map((campus) => (
@@ -411,7 +414,6 @@ const AllCampusesView = (props) => {
           </div>
 
       <br />
-      <AddCampusForm onSubmit={handleAddCampus} />
       <br /><br />
     </div>
   );
