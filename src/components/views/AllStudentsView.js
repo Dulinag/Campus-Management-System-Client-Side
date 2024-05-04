@@ -8,22 +8,32 @@ const useStyles = makeStyles(theme => ({
     height: '100vh',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
     alignItems: 'center',
     backgroundImage: 'linear-gradient(to bottom right, #6a11cb, #2575fc)',
     color: '#ffffff',
     textAlign: 'center',
-    overflow: 'hidden',
+    overflow: 'auto',
+  },
+  header: {
+    marginTop: '20px', // Additional space at the top
+  },
+  cardsContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    width: '100%',
+    padding: '20px 0', // Padding instead of margin for spacing inside the container
   },
   studentContainer: {
-    width: '80%', // Manageable width for each student container
-    maxWidth: '600px', // Maximum width to keep the UI clean
-    margin: '20px auto', // Centering and spacing vertically
+    width: '30%',
+    maxWidth: '300px',
+    margin: '10px',
     padding: '10px',
-    backgroundColor: '#e3e6f0', // Light gray background for each student
+    backgroundColor: '#e3e6f0',
     borderRadius: '5px',
+    paddingBottom: '5px',
     boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.15)',
-    textAlign: 'center', // Center text elements within the student container
   },
   studentName: {
     fontSize: '1.2rem',
@@ -49,31 +59,31 @@ const AllStudentsView = (props) => {
 
   return (
     <div className={classes.root}>
-      <Typography variant="h3">All Students</Typography>
-
-      {students.map((student) => {
-        let name = student.firstname + " " + student.lastname;
-        return (
-          <div key={student.id} className={classes.studentContainer}>
-            <div className={classes.studentName}>
-              <Link to={`/student/${student.id}`}>
-                <Typography variant="h6">{name}</Typography>
-              </Link>
-            </div>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={() => deleteStudent(student.id)}
-            >
-              Delete
-            </Button>
-          </div>
-        );
-      })}
-      <br />
+      <Typography variant="h3" className={classes.header}>All Students</Typography>
       <Link to={`/newstudent`}>
         <Button variant="contained" color="primary">Add New Student</Button>
       </Link>
+      <div className={classes.cardsContainer}>
+        {students.map((student) => {
+          let name = student.firstname + " " + student.lastname;
+          return (
+            <div key={student.id} className={classes.studentContainer}>
+              <div className={classes.studentName}>
+                <Link to={`/student/${student.id}`}>
+                  <Typography variant="h6">{name}</Typography>
+                </Link>
+              </div>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => deleteStudent(student.id)}
+              >
+                Delete
+              </Button>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };
