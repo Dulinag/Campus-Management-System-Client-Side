@@ -357,7 +357,9 @@ const AllCampusesView = (props) => {
 
 
   return (
-    <div>
+    <div className={classes.reet}>
+
+    <div className={classes.studentContainer}>
       <h1>All Campuses</h1>
       {props.allCampuses.length ? (
         props.allCampuses.map((campus) => (
@@ -386,9 +388,6 @@ const AllCampusesView = (props) => {
       )}
       <br />
       <AddCampusForm onSubmit={handleAddCampus} />
-      <Link to={`/newcampus`}>
-        <button>Add New Campus</button>
-      </Link>
       <br /><br />
     </div>
   );
