@@ -7,48 +7,6 @@ It constructs a React component to display all campuses.
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { Button, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles(theme => ({
-
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundImage: 'linear-gradient(to bottom right, #6a11cb, #2575fc)',
-    color: '#ffffff',
-    textAlign: 'center',
-    overflow: 'hidden',
-  },  
-  reet: {
-   
-    justifyContent: 'center',
-    backgroundImage: 'linear-gradient(to bottom right, #6a11cb, #2575fc)',
-    color: '#ffffff', // White text color
-    textAlign: 'center',
-    overflow: 'hidden', // Hide overflowing content
-    color: "white"
-  },
-  studentContainer: {
-    width: '80%', // Manageable width for each student container
-    maxWidth: '600px', // Maximum width to keep the UI clean
-    margin: '20px auto', // Centering and spacing vertically
-    padding: '10px',
-    backgroundColor: '#e3e6f0', // Light gray background for each student
-    borderRadius: '5px',
-    boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.15)',
-    textAlign: 'center', // Center text elements within the student container
-    color: "black",
-    marginBottom: theme.spacing(2), // Adjust margin for the campus container
-  },
-  studentName: {
-    fontSize: '1.2rem',
-    color: '#2a2f45',
-    marginBottom: '10px',
-  },
-}));
 
 
 
@@ -77,7 +35,7 @@ const EditCampusForm = ({ onSubmit, onCancel, campus }) => {
     }));
   
 
-    // Reset the error message when user starts typing
+    // Reset error message when user starts typing
     setErrors((prevErrors) => ({
       ...prevErrors,
       [name]: "",
@@ -194,20 +152,42 @@ const AddCampusForm = ({ onSubmit }) => {
     }));
   };
 
-
   const validate = () => {
     let isValid = true;
     const newErrors = {};
-
-    // Validate imageUrl
-    if (formData.imageUrl && !formData.imageUrl.endsWith(".jpg")) {
+  
+    // Validate name field
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
+      isValid = false;
+    }
+  
+    // Validate address field
+    if (!formData.address.trim()) {
+      newErrors.address = "Address is required";
+      isValid = false;
+    }
+  
+    // Validate description field
+    if (!formData.description.trim()) {
+      newErrors.description = "Description is required";
+      isValid = false;
+    }
+  
+    // Validate imageURL field
+    if (!formData.imageUrl.trim()) {
+      newErrors.imageUrl = "Image URL is required";
+      isValid = false;
+    } else if (!formData.imageUrl.endsWith(".jpg")) {
       newErrors.imageUrl = "Image URL must end with .jpg";
       isValid = false;
     }
-
+  
     setErrors(newErrors);
     return isValid;
   };
+  
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -224,13 +204,10 @@ const AddCampusForm = ({ onSubmit }) => {
       });
     }
   };
-  const classes = useStyles();
 
 
 
   return (
-    <div className={classes.root}>
-
     <section style={{ border: "1px solid #ccc", padding: "20px", marginBottom: "20px" }}>
       <h2>Add Campus</h2>
       <form onSubmit={handleSubmit}>
@@ -243,6 +220,7 @@ const AddCampusForm = ({ onSubmit }) => {
             value={formData.name}
             onChange={handleChange}
           />
+          {errors.name && <span style={{ color: "red" }}>{errors.name}</span>}
         </div>
         <div style={{ marginBottom: "10px" }}>
           <label htmlFor="address">Address:</label>
@@ -253,6 +231,7 @@ const AddCampusForm = ({ onSubmit }) => {
             value={formData.address}
             onChange={handleChange}
           />
+          {errors.address && <span style={{ color: "red" }}>{errors.address}</span>}
         </div>
         <div style={{ marginBottom: "10px" }}>
           <label htmlFor="description">Description:</label>
@@ -262,6 +241,7 @@ const AddCampusForm = ({ onSubmit }) => {
             value={formData.description}
             onChange={handleChange}
           />
+          {errors.description && <span style={{ color: "red" }}>{errors.description}</span>}
         </div>
         <div style={{ marginBottom: "10px" }}>
           <label htmlFor="imageUrl">Image URL:</label>
@@ -277,7 +257,6 @@ const AddCampusForm = ({ onSubmit }) => {
         <button type="submit">Submit</button>
       </form>
     </section>
-    </div>
   );
 };
 
@@ -375,13 +354,10 @@ const AllCampusesView = (props) => {
 
 
 
-  const classes = useStyles();
 
 
   return (
-    <div className={classes.reet}>
-
-    <div className={classes.studentContainer}>
+    <div>
       <h1>All Campuses</h1>
       {props.allCampuses.length ? (
         props.allCampuses.map((campus) => (
@@ -408,10 +384,11 @@ const AllCampusesView = (props) => {
       ) : (
         <div>There are no campuses.</div>
       )}
-          </div>
-
       <br />
       <AddCampusForm onSubmit={handleAddCampus} />
+      <Link to={`/newcampus`}>
+        <button>Add New Campus</button>
+      </Link>
       <br /><br />
     </div>
   );
