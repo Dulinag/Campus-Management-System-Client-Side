@@ -44,18 +44,91 @@ const useStyles = makeStyles(theme => ({
 
 const AllStudentsView = (props) => {
   const { students, deleteStudent } = props;
-  const classes = useStyles();
+  
+  // State for managing edit form and edited student data
+  const [editFormData, setEditFormData] = useState(null);
 
-  if (!students.length) {
+  // Function to handle edit form submission
+  const handleEditSubmit = async (e, studentId) => {
+    e.preventDefault();
+    
+    try {
+      const response = await fetch(`/api/students/${studentId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(editFormData),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to update student.');
+      }
+
+      const updatedStudent = await response.json();
+      console.log('Student updated:', updatedStudent);
+      // Clear edit form data
+      setEditFormData(null);
+      
+      // Optionally, you can reload the student list after successful update
+      window.location.reload();
+    } catch (error) {
+      console.error('Error updating student:', error);
+    }
+  };
+
+
+
+  // Render edit form if editFormData exists
+  const renderEditForm = (student) => {
     return (
-      <div className={classes.root}>
-        <Typography variant="body1">There are no students.</Typography>
-        <Link to={`newstudent`}>
-          <Button variant="contained" color="primary">Add New Student</Button>
-        </Link>
+      <div key={student.id}>
+        <h2>Edit Student</h2>
+        <form onSubmit={(e) => handleEditSubmit(e, student.id)}>
+          <div>
+            <label htmlFor="firstname">First Name:</label>
+            <input type="text" id="firstname" name="firstname" defaultValue={student.firstname} onChange={(e) => setEditFormData({ ...editFormData, firstname: e.target.value })} />
+          </div>
+          <div>
+            <label htmlFor="lastname">Last Name:</label>
+            <input type="text" id="lastname" name="lastname" defaultValue={student.lastname} onChange={(e) => setEditFormData({ ...editFormData, lastname: e.target.value })} />
+          </div>
+          <div>
+            <label htmlFor="email">Email:</label>
+            <input type="email" id="email" name="email" defaultValue={student.email} onChange={(e) => setEditFormData({ ...editFormData, email: e.target.value })} />
+          </div>
+          <div>
+            <label htmlFor="imageUrl">Image URL:</label>
+            <input type="text" id="imageUrl" name="imageUrl" defaultValue={student.imageUrl} onChange={(e) => setEditFormData({ ...editFormData, imageUrl: e.target.value })} />
+          </div>
+          <div>
+            <label htmlFor="gpa">GPA:</label>
+            <input type="number" id="gpa" name="gpa" defaultValue={student.gpa} onChange={(e) => setEditFormData({ ...editFormData, gpa: e.target.value })} />
+          </div>
+          <div>
+            <label htmlFor="campusID">Campus ID:</label>
+            <input type="text" id="campusID" name="campusID" defaultValue={student.campusId} onChange={(e) => setEditFormData({ ...editFormData, campusId: e.target.value })} />
+          </div>
+          <button type="submit">Submit</button>
+        </form>
       </div>
     );
-  }
+  };
+
+
+
+    // If there is no student, display a message
+    if (!students.length) {
+      return (
+        <div>
+          <p>There are no students.</p>
+          <Link to={`newstudent`}>
+            <button>Add New Student</button>
+          </Link>
+        </div>
+      );
+    }
+
 
   return (
     <div className={classes.root}>
@@ -69,20 +142,44 @@ const AllStudentsView = (props) => {
           return (
             <div key={student.id} className={classes.studentContainer}>
               <div className={classes.studentName}>
-                <Link to={`/student/${student.id}`}>
-                  <Typography variant="h6">{name}</Typography>
-                </Link>
-              </div>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={() => deleteStudent(student.id)}
-              >
-                Delete
-              </Button>
-            </div>
-          );
-        })}
+                  <Link to={`/student/${student.id}`}>
+                    <Typography variant="h6">{name}</Typography>
+                  </Link>
+
+                        </div>
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          onClick={() => setEditFormData(student)}
+                        >
+                          Edit
+                        </Button>
+
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          onClick={() => deleteStudent(student.id)}
+                        >
+                          Delete
+                        </Button>
+
+
+
+                        <hr />
+                      {editFormData && editFormData.id === student.id && renderEditForm(student)}
+
+
+                      </div>
+
+              );
+            })}
+                  <br />
+          <Link to={`/newstudent`}>
+            <button>Add New Student</button>
+          </Link>
+          <br /><br />
+
+
       </div>
     </div>
   );
