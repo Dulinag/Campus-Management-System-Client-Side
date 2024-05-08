@@ -87,13 +87,34 @@ const EditCampusForm = ({ onSubmit, onCancel, campus }) => {
   const validate = () => {
     let isValid = true;
     const newErrors = {};
-
-    // Validate imageUrl
-    if (formData.imageUrl && !formData.imageUrl.endsWith(".jpg")) {
+  
+    // Validate name field
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
+      isValid = false;
+    }
+  
+    // Validate address field
+    if (!formData.address.trim()) {
+      newErrors.address = "Address is required";
+      isValid = false;
+    }
+  
+    // Validate description field
+    if (!formData.description.trim()) {
+      newErrors.description = "Description is required";
+      isValid = false;
+    }
+  
+    // Validate imageURL field
+    if (!formData.imageUrl.trim()) {
+      newErrors.imageUrl = "Image URL is required";
+      isValid = false;
+    } else if (!formData.imageUrl.endsWith(".jpg")) {
       newErrors.imageUrl = "Image URL must end with .jpg";
       isValid = false;
     }
-
+  
     setErrors(newErrors);
     return isValid;
   };
@@ -127,6 +148,7 @@ const EditCampusForm = ({ onSubmit, onCancel, campus }) => {
             value={formData.name}
             onChange={handleChange}
           />
+          {errors.name && <span style={{ color: "red" }}>{errors.name}</span>}
         </div>
         <div style={{ marginBottom: "10px" }}>
           <label htmlFor="address">Address:</label>
@@ -137,6 +159,7 @@ const EditCampusForm = ({ onSubmit, onCancel, campus }) => {
             value={formData.address}
             onChange={handleChange}
           />
+          {errors.address && <span style={{ color: "red" }}>{errors.address}</span>}
         </div>
         <div style={{ marginBottom: "10px" }}>
           <label htmlFor="description">Description:</label>
@@ -146,6 +169,7 @@ const EditCampusForm = ({ onSubmit, onCancel, campus }) => {
             value={formData.description}
             onChange={handleChange}
           />
+          {errors.description && <span style={{ color: "red" }}>{errors.description}</span>}
         </div>
         <div style={{ marginBottom: "10px" }}>
           <label htmlFor="imageUrl">Image URL:</label>
