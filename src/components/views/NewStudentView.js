@@ -35,9 +35,11 @@ const useStyles = makeStyles( () => ({
     padding: '3px'
   },
 }));
+
 const NewStudentView = (props) => {
-  const { handleChange } = props;
+  const {handleChange, handleSubmit } = props;
   const classes = useStyles();
+
 
   const [errors, setErrors] = useState({});
 
@@ -92,7 +94,7 @@ const NewStudentView = (props) => {
       console.error('Error adding student:', error);
     }
   };
-
+  
   return (
     <div>
       <h1>New Student</h1>
@@ -158,5 +160,4 @@ const NewStudentView = (props) => {
     </div>
   );
 };
-
 export default NewStudentView;

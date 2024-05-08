@@ -53,6 +53,7 @@ const useStyles = makeStyles(theme => ({
 
 
 
+
 //----------------------------------------------Edit campus form-------------------------//
 const EditCampusForm = ({ onSubmit, onCancel, campus }) => {
   console.log("EditCampusForm running")
@@ -76,7 +77,7 @@ const EditCampusForm = ({ onSubmit, onCancel, campus }) => {
     }));
   
 
-    // Reset error message when user starts typing
+    // Reset the error message when user starts typing
     setErrors((prevErrors) => ({
       ...prevErrors,
       [name]: "",
@@ -193,6 +194,7 @@ const AddCampusForm = ({ onSubmit }) => {
     }));
   };
 
+
   const validate = () => {
     let isValid = true;
     const newErrors = {};
@@ -227,8 +229,6 @@ const AddCampusForm = ({ onSubmit }) => {
     setErrors(newErrors);
     return isValid;
   };
-  
-  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -245,10 +245,13 @@ const AddCampusForm = ({ onSubmit }) => {
       });
     }
   };
+  const classes = useStyles();
 
 
 
   return (
+    <div className={classes.root}>
+
     <section style={{ border: "1px solid #ccc", padding: "20px", marginBottom: "20px" }}>
       <h2>Add Campus</h2>
       <form onSubmit={handleSubmit}>
@@ -298,6 +301,7 @@ const AddCampusForm = ({ onSubmit }) => {
         <button type="submit">Submit</button>
       </form>
     </section>
+    </div>
   );
 };
 
@@ -395,10 +399,16 @@ const AllCampusesView = (props) => {
 
 
 
+  const classes = useStyles();
 
 
   return (
-    <div>
+    <div className={classes.reet}>
+            <AddCampusForm onSubmit={handleAddCampus} />
+
+
+    <div className={classes.studentContainer}>
+      
       <h1>All Campuses</h1>
       {props.allCampuses.length ? (
         props.allCampuses.map((campus) => (
@@ -425,8 +435,9 @@ const AllCampusesView = (props) => {
       ) : (
         <div>There are no campuses.</div>
       )}
+          </div>
+
       <br />
-      <AddCampusForm onSubmit={handleAddCampus} />
       <br /><br />
     </div>
   );
