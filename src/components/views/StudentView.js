@@ -42,6 +42,10 @@ const StudentView = (props) => {
         <h3>GPA: {student.gpa}</h3>
         <h3>Image URL: {student.imageUrl}</h3>
       </div>
+
+      <Link to={`/students`}>
+        <button>Go back to edit student info</button>
+      </Link>
     </div>
   );
 };
