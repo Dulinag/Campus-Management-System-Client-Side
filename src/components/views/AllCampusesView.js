@@ -424,10 +424,17 @@ const AllCampusesView = (props) => {
 
 
 
+
+  const classes = useStyles();
+
+
   return (
     <div className={classes.reet}>
+            <AddCampusForm onSubmit={handleAddCampus} />
+
 
     <div className={classes.studentContainer}>
+      
       <h1>All Campuses</h1>
       {props.allCampuses.length ? (
         props.allCampuses.map((campus) => (
@@ -454,8 +461,9 @@ const AllCampusesView = (props) => {
       ) : (
         <div>There are no campuses.</div>
       )}
+          </div>
+
       <br />
-      <AddCampusForm onSubmit={handleAddCampus} />
       <br /><br />
     </div>
   );
