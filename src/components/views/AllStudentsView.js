@@ -45,22 +45,53 @@ const useStyles = makeStyles(theme => ({
 const AllStudentsView = (props) => {
   const { students, deleteStudent } = props;
   
-  // State for managing edit form and edited student data
   const [editFormData, setEditFormData] = useState(null);
+  const [errors, setErrors] = useState({});
+  const [studentErrors, setStudentErrors] = useState({});
 
-  // Function to handle edit form submission
-  const handleEditSubmit = async (e, studentId) => {
-    e.preventDefault();
-    
+
+const handleEditSubmit = async (e, studentId) => {
+  e.preventDefault();
+
+  const studentData = editFormData;
+  const errors = {};
+
+  // Validation checks
+  if (studentData.gpa < 0 || studentData.gpa > 4) {
+    errors.gpa = 'GPA must be between 0 and 4.';
+  }
+  if (!studentData.imageUrl.endsWith('.jpg')) {
+    errors.imageUrl = 'Image URL must end with .jpg.';
+  }
+  if (!studentData.email.endsWith('.com')) {
+    errors.email = 'Email must end with .com.';
+  }
+
+// Check if Campus ID exists
+try {
+  const campusIdExists = await checkCampusIdExists(studentData.campusId);
+  if (!campusIdExists) {
+    errors.campusId = 'Campus ID does not exist.';
+  }
+} catch (error) {
+  console.error('Error checking Campus ID existence:', error);
+  errors.campusId = 'Error checking Campus ID existence.';
+}
+
+
+  setStudentErrors({ [studentId]: errors });
+
+  
+  if (Object.keys(errors).length === 0) {
     try {
       const response = await fetch(`/api/students/${studentId}`, {
-        method: "PUT",
+        method: 'PUT',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(editFormData),
+        body: JSON.stringify(studentData),
       });
-      
+
       if (!response.ok) {
         throw new Error('Failed to update student.');
       }
@@ -69,65 +100,101 @@ const AllStudentsView = (props) => {
       console.log('Student updated:', updatedStudent);
       // Clear edit form data
       setEditFormData(null);
-      
-      // Optionally, you can reload the student list after successful update
+
       window.location.reload();
     } catch (error) {
-      console.error('Error updating student:', error);
+      console.error('Error updating student:', error.message);
+
     }
-  };
+  }
+};
 
 
 
-  // Render edit form if editFormData exists
-  const renderEditForm = (student) => {
-    return (
-      <div key={student.id}>
-        <h2>Edit Student</h2>
-        <form onSubmit={(e) => handleEditSubmit(e, student.id)}>
-          <div>
-            <label htmlFor="firstname">First Name:</label>
-            <input type="text" id="firstname" name="firstname" defaultValue={student.firstname} onChange={(e) => setEditFormData({ ...editFormData, firstname: e.target.value })} />
-          </div>
-          <div>
-            <label htmlFor="lastname">Last Name:</label>
-            <input type="text" id="lastname" name="lastname" defaultValue={student.lastname} onChange={(e) => setEditFormData({ ...editFormData, lastname: e.target.value })} />
-          </div>
-          <div>
-            <label htmlFor="email">Email:</label>
-            <input type="email" id="email" name="email" defaultValue={student.email} onChange={(e) => setEditFormData({ ...editFormData, email: e.target.value })} />
-          </div>
-          <div>
-            <label htmlFor="imageUrl">Image URL:</label>
-            <input type="text" id="imageUrl" name="imageUrl" defaultValue={student.imageUrl} onChange={(e) => setEditFormData({ ...editFormData, imageUrl: e.target.value })} />
-          </div>
-          <div>
-            <label htmlFor="gpa">GPA:</label>
-            <input type="number" id="gpa" name="gpa" defaultValue={student.gpa} onChange={(e) => setEditFormData({ ...editFormData, gpa: e.target.value })} />
-          </div>
-          <div>
-            <label htmlFor="campusID">Campus ID:</label>
-            <input type="text" id="campusID" name="campusID" defaultValue={student.campusId} onChange={(e) => setEditFormData({ ...editFormData, campusId: e.target.value })} />
-          </div>
-          <button type="submit">Submit</button>
-        </form>
-      </div>
-    );
-  };
+
+const checkCampusIdExists = async (campusId) => {
+  try {
+    const response = await fetch(`/api/campuses/${campusId}`, {
+      method: 'GET',
+    });
+
+    if (response.status === 404) {
+      return false; //CampusId does not exist
+    }
+
+    const data = await response.json();
+    return !!data; //Return true if capusId exists
+  } catch (error) {
+    console.error('Error checking campus ID:', error);
+    return false; //Return false in case of an error
+  }
+};
 
 
 
-    // If there is no student, display a message
-    if (!students.length) {
-      return (
+const renderEditForm = (student) => {
+  return (
+    <div key={student.id}>
+      <h2>Edit Student</h2>
+      <form onSubmit={(e) => handleEditSubmit(e, student.id)}>
         <div>
-          <p>There are no students.</p>
-          <Link to={`newstudent`}>
-            <button>Add New Student</button>
-          </Link>
+          <label htmlFor="firstname">First Name:</label>
+          <input type="text" id="firstname" name="firstname" defaultValue={student.firstname} onChange={(e) => setEditFormData({ ...editFormData, firstname: e.target.value })} />
         </div>
-      );
-    }
+        <div>
+          <label htmlFor="lastname">Last Name:</label>
+          <input type="text" id="lastname" name="lastname" defaultValue={student.lastname} onChange={(e) => setEditFormData({ ...editFormData, lastname: e.target.value })} />
+        </div>
+        <div>
+          <label htmlFor="email">Email:</label>
+          <input type="email" id="email" name="email" defaultValue={student.email} onChange={(e) => setEditFormData({ ...editFormData, email: e.target.value })} />
+          {studentErrors[student.id] && studentErrors[student.id].email && <span style={{ color: 'red' }}>{studentErrors[student.id].email}</span>}
+        </div>
+        <div>
+          <label htmlFor="imageUrl">Image URL:</label>
+          <input type="text" id="imageUrl" name="imageUrl" defaultValue={student.imageUrl} onChange={(e) => setEditFormData({ ...editFormData, imageUrl: e.target.value })} />
+          {studentErrors[student.id] && studentErrors[student.id].imageUrl && <span style={{ color: 'red' }}>{studentErrors[student.id].imageUrl}</span>}
+        </div>
+        <div>
+          <label htmlFor="gpa">GPA:</label>
+          <input type="number" id="gpa" name="gpa" defaultValue={student.gpa} onChange={(e) => setEditFormData({ ...editFormData, gpa: e.target.value })} />
+          {studentErrors[student.id] && studentErrors[student.id].gpa && <span style={{ color: 'red' }}>{studentErrors[student.id].gpa}</span>}
+        </div>
+        <div>
+        <label htmlFor="campusID">Campus ID:</label>
+        <input type="text" id="campusID" name="campusID" defaultValue={student.campusId} onChange={(e) => setEditFormData({ ...editFormData, campusId: e.target.value })} />
+        {studentErrors[student.id] && studentErrors[student.id].campusId && <span style={{ color: 'red' }}>{studentErrors[student.id].campusId}</span>}
+      </div>
+        <button type="submit">Submit</button>
+        {/* <button type="button" onClick={() => setEditFormData(null)}>Cancel</button> */}
+        <button type="button" onClick={() => handleCancelEdit(student.id)}>Cancel</button>
+      </form>
+    </div>
+  );
+};
+
+
+// Function to handle canceling the edit form
+const handleCancelEdit = (studentId) => {
+  // Reset editFormData to null
+  setEditFormData(null);
+  // Clear any error messages for this student
+  setStudentErrors((prevErrors) => ({ ...prevErrors, [studentId]: {} }));
+};
+
+
+
+
+if (!students.length) {
+  return (
+    <div>
+      <p>There are no students.</p>
+      <Link to={`newstudent`}>
+        <button>Add New Student</button>
+      </Link>
+    </div>
+  );
+}
 
 
   return (
@@ -167,7 +234,10 @@ const AllStudentsView = (props) => {
 
                         <hr />
                       {editFormData && editFormData.id === student.id && renderEditForm(student)}
-
+                      {errors.email && <span style={{ color: 'red' }}>{errors.email}</span>}
+                      {errors.imageUrl && <span style={{ color: 'red' }}>{errors.imageUrl}</span>}
+                      {errors.gpa && <span style={{ color: 'red' }}>{errors.gpa}</span>}
+                      {errors.campusId && <span style={{ color: 'red' }}>{errors.campusId}</span>}
 
                       </div>
 
