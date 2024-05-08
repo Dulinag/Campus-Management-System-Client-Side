@@ -43,10 +43,10 @@ const NewStudentView = (props) => {
     const formData = {
       firstname: e.target.firstname.value,
       lastname: e.target.lastname.value,
-      email: e.target.email.value, // Add email field
-      imageUrl: e.target.imageUrl.value, // Add imageUrl field
-      gpa: e.target.gpa.value, // Add gpa field
-      campusId: e.target.campusId.value,
+      email: e.target.email.value,
+      imageUrl: e.target.imageUrl.value,
+      gpa: e.target.gpa.value,
+      campusId: e.target.campusId.value || null, // Set default value to null if empty
     };
 
     // Validate form fields
@@ -66,9 +66,6 @@ const NewStudentView = (props) => {
     if (!formData.gpa) {
       newErrors.gpa = "GPA is required";
     }
-    if (!formData.campusId.trim()) {
-      newErrors.campusId = "Campus Id is required";
-    }
 
     // If there are errors, set them and prevent form submission
     if (Object.keys(newErrors).length > 0) {
@@ -81,7 +78,6 @@ const NewStudentView = (props) => {
 
       console.log('New student added:', response.data);
       // Refresh the page after adding the new student
-      //window.location.reload();
       window.location.href = '/students';
     } catch (error) {
       console.error('Error adding student:', error);
@@ -138,7 +134,6 @@ const NewStudentView = (props) => {
             <div>
               <label style={{ color: '#11153e', fontWeight: 'bold' }}>Campus Id: </label>
               <input type="text" name="campusId" onChange={(e) => handleChange(e)} />
-              {errors.campusId && <span style={{ color: "red" }}>{errors.campusId}</span>}
             </div>
             <br />
 
@@ -153,6 +148,7 @@ const NewStudentView = (props) => {
     </div>
   );
 };
+
 
 export default NewStudentView;
 
