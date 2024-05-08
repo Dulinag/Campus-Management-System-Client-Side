@@ -1,18 +1,12 @@
-/*==================================================
-NewStudentView.js
-
-The Views component is responsible for rendering web page with data provided by the corresponding Container component.
-It constructs a React component to display the new student page.
-================================================== */
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 
 // Create styling for the input form
-const useStyles = makeStyles( () => ({
-  formContainer:{  
+const useStyles = makeStyles(() => ({
+  formContainer: {
     width: '500px',
     backgroundColor: '#f0f0f5',
     borderRadius: '5px',
@@ -22,13 +16,13 @@ const useStyles = makeStyles( () => ({
     flexGrow: 1,
     textAlign: 'left',
     textDecoration: 'none'
-  }, 
-  customizeAppBar:{
+  },
+  customizeAppBar: {
     backgroundColor: '#11153e',
     shadows: ['none'],
   },
-  formTitle:{
-    backgroundColor:'#c5c8d6',
+  formTitle: {
+    backgroundColor: '#c5c8d6',
     marginBottom: '15px',
     textAlign: 'center',
     borderRadius: '5px 5px 0px 0px',
@@ -37,9 +31,8 @@ const useStyles = makeStyles( () => ({
 }));
 
 const NewStudentView = (props) => {
-  const {handleChange, handleSubmit } = props;
+  const { handleChange } = props;
   const classes = useStyles();
-
 
   const [errors, setErrors] = useState({});
 
@@ -94,7 +87,7 @@ const NewStudentView = (props) => {
       console.error('Error adding student:', error);
     }
   };
-  
+
   return (
     <div>
       <h1>New Student</h1>
@@ -160,4 +153,6 @@ const NewStudentView = (props) => {
     </div>
   );
 };
+
 export default NewStudentView;
+
