@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: '10px',
   },
   media: {
-    height: 140, // Adjust this value as needed
+    height: 140, 
   },
 }));
 
@@ -78,10 +78,8 @@ const AllStudentsView = (props) => {
       const updatedStudent = await response.json();
       console.log('Student updated:', updatedStudent);
       handleCloseDialog();
-      // Optional: Refresh the list of students here or update state accordingly
     } catch (error) {
       console.error('Error updating student:', error);
-      // Handle errors appropriately in the UI
     }
   };
 

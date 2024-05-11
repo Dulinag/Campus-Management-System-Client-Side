@@ -46,13 +46,12 @@ const CampusForm = ({ open, handleClose, initialData, onSubmit }) => {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    setFormData(initialData);  // Ensure form data is reset when initialData changes
+    setFormData(initialData);  
   }, [initialData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    // Clear errors when user starts typing
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
