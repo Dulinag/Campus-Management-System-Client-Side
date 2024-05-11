@@ -44,6 +44,7 @@ const useStyles = makeStyles(theme => ({
 
 const AllStudentsView = (props) => {
   const { students, deleteStudent } = props;
+  const classes = useStyles();
   
   const [editFormData, setEditFormData] = useState(null);
   const [errors, setErrors] = useState({});
@@ -187,12 +188,12 @@ const handleCancelEdit = (studentId) => {
 
 if (!students.length) {
   return (
-    <div>
-      <p>There are no students.</p>
-      <Link to={`newstudent`}>
-        <button>Add New Student</button>
-      </Link>
-    </div>
+      <div className={classes.root}>
+        <Typography variant="body1">There are no students.</Typography>
+        <Link to={`newstudent`}>
+          <Button variant="contained" color="primary">Add New Student</Button>
+        </Link>
+      </div>
   );
 }
 
