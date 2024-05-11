@@ -24,7 +24,7 @@ const HomePageView = () => {
 
   return (
     <div className={classes.root}>
-      <h1 className={classes.title}>Welcome to Our Website</h1>
+      <h1 className={classes.title}>Welcome to D AND I Campus Mangement System</h1>
     </div>
   );    
 }
