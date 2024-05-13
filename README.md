@@ -9,7 +9,7 @@
 This repository contains the client-side code for the Campus Management System, a full-stack CRUD application developed using React, Redux, and React Router. This frontend interface provides a dynamic experience for managing campuses and students.
 
 ## Demo Video
-[![Watch the video](https://img.youtube.com/vi/INSERT_VIDEO_ID_HERE/maxresdefault.jpg)](https://youtu.be/INSERT_VIDEO_ID_HERE)
+[![Watch the video](https://img.youtube.com/vi/INSERT_VIDEO_ID_HERE/maxresdefault.jpg)](https://vimeo.com/945860567?share=copy)
 
 ## Features
 - Interactive web interface with React components
