@@ -33,9 +33,6 @@ The application allows users to perform the following actions:
 - **View All Students**: List all students with options to add, edit, or delete.
 - **View Single Student**: Detailed information about a student and their campus affiliation.
 
-## API Integration
-Ensure the server-side application is running as this client makes API calls to fetch and manage data.
-
 
 ## Getting Started
 These instructions will guide you on how to get your project up and running on your local machine for development and testing purposes.
