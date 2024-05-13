@@ -1,7 +1,38 @@
-# client-starter-code
+# Campus Management System - Client Side
 
-This repository is the client (front-end) starter code for Final Project - Full-Stack CRUD Application.
+## Contributors
+- **Dulina Gunasekara** - *Full-Stack Dev* - [Dulinag](https://github.com/Dulinag)
+- **Ian Clarke** - *Full-Stack Dev* - [ianclarke03 ](https://github.com/ianclarke03 )
 
+
+## Overview
+This repository contains the client-side code for the Campus Management System, a full-stack CRUD application developed using React, Redux, and React Router. This frontend interface provides a dynamic experience for managing campuses and students.
+
+## Demo Video
+[![Watch the video](https://img.youtube.com/vi/INSERT_VIDEO_ID_HERE/maxresdefault.jpg)](https://youtu.be/INSERT_VIDEO_ID_HERE)
+
+## Features
+- Interactive web interface with React components
+- State management using Redux
+- Client-side routing with React Router
+- Form validation and error handling
+
+## Usage
+The application allows users to perform the following actions:
+- **View All Campuses**: Display a list of all campuses with options to add, edit, or delete.
+- **View Single Campus**: Detailed view of a single campus with options to edit or add students.
+- **View All Students**: List all students with options to add, edit, or delete.
+- **View Single Student**: Detailed information about a student and their campus affiliation.
+
+## API Integration
+Ensure the server-side application is running as this client makes API calls to fetch and manage data.
+
+
+## Getting Started
+These instructions will guide you on how to get your project up and running on your local machine for development and testing purposes.
+
+### Prerequisites
+Ensure you have the following installed:
 ----------
 ### 1. Use the following process to ***import*** the Final Project client starter code repository to your GitHub account as the starter codebase
 1.	Log on to GitHub
